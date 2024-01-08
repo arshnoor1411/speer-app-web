@@ -1,4 +1,5 @@
-import SignupPage from "@/components/Signup";
+import OtpForm from "@/components/SignUp/OtpForm";
+import SignupPage from "@/components/SignUp/Signup";
 import axios from "axios";
 import { useState } from "react";
 
@@ -10,8 +11,9 @@ const SignUp = () => {
   const [password, setPassword] = useState("");
 
   const [otp, setOtp] = useState("");
+  const [showOtpPopup, setShowOtpPopup] = useState(false);
 
-  const [signedUp] = useState(false);
+  const [signedUp, setSignedUp] = useState(false);
 
   const handleSignup = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
@@ -30,6 +32,13 @@ const SignUp = () => {
       // Handle error scenarios
       console.error("User registration failed:", response.data.error);
     }
+  };
+
+  const handleOtpClose = () => {
+    // Close the OTP popup
+    setShowOtpPopup(false);
+    // Set the user as signed up
+    setSignedUp(true);
   };
 
   return (
@@ -52,7 +61,8 @@ const SignUp = () => {
           setPassword={setPassword}
           setOtp={setOtp}
           onSubmit={handleSignup}
-        ></SignupPage>
+        />
+        //{showOtpPopup && <OtpForm onClose={handleOtpClose} />}
       )}
     </div>
   );

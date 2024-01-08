@@ -1,4 +1,4 @@
-import LoginForm from "@/components/Login";
+import LoginForm from "@/components/Login/Login";
 import axios from "axios";
 import { useState } from "react";
 
