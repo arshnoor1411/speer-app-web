@@ -1,33 +1,33 @@
 // pages/signup.tsx
-import React, { Dispatch, SetStateAction, MouseEvent } from "react";
+import React, { Dispatch, SetStateAction, MouseEvent, useState } from "react";
 import Signup from "./Signup";
+import axios from "axios";
 
-interface SignupPageProps {
-  firstName: string;
-  lastName: string;
-  email: string;
-  password: string;
-  otp: string;
-  setFirstName: Dispatch<SetStateAction<string>>;
-  setLastName: Dispatch<SetStateAction<string>>;
-  setEmail: Dispatch<SetStateAction<string>>;
-  setPassword: Dispatch<SetStateAction<string>>;
-  setOtp: Dispatch<SetStateAction<string>>;
-  onSubmit: (e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>) => void;
-}
+const SignupPage = () => {
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
 
-const SignupPage: React.FC<SignupPageProps> = (props: SignupPageProps) => {
-  const {
-    firstName,
-    lastName,
-    email,
-    password,
-    setFirstName,
-    setLastName,
-    setEmail,
-    setPassword,
-    onSubmit,
-  } = props;
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleSignup = async (e: { preventDefault: () => void }) => {
+    e.preventDefault();
+
+    const response = await axios.post("http://localhost:4000/auth/signup", {
+      firstName,
+      lastName,
+      email,
+      password,
+    });
+    console.log("RRR", response);
+
+    if (response.data) {
+      console.log("Successfully Signed Up");
+    } else {
+      // Handle error scenarios
+      console.error("User registration failed:", response.data.error);
+    }
+  };
 
   return (
     <div>
@@ -73,13 +73,7 @@ const SignupPage: React.FC<SignupPageProps> = (props: SignupPageProps) => {
         />
       </div>
       <br />
-      <button
-        onClick={(e) => {
-          onSubmit(e);
-        }}
-      >
-        Sign Up
-      </button>
+      <button onClick={handleSignup}>Sign Up</button>
     </div>
   );
 };

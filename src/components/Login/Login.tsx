@@ -1,17 +1,19 @@
-// pages/login.tsx
-import React, { Dispatch, SetStateAction, MouseEvent } from "react";
-import Login from "./Login";
+import React, { Dispatch, SetStateAction, MouseEvent, useState } from "react";
 
-interface LoginFormProps {
-  email: string;
-  password: string;
-  setEmail: Dispatch<SetStateAction<string>>;
-  setPassword: Dispatch<SetStateAction<string>>;
-  onSubmit: (e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>) => void;
-}
+import axios from "axios";
 
-const LoginForm: React.FC<LoginFormProps> = (props: LoginFormProps) => {
-  const { email, password, setEmail, setPassword, onSubmit } = props;
+const LoginForm = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleLogin = async (e: { preventDefault: () => void }) => {
+    e.preventDefault();
+
+    const repsonse = await axios.post("http://localhost:4000/auth/login", {
+      email,
+      password,
+    });
+  };
   return (
     <div>
       <h1>Login Page</h1>
@@ -33,11 +35,7 @@ const LoginForm: React.FC<LoginFormProps> = (props: LoginFormProps) => {
         />
       </div>
       <br />
-      <button
-        onClick={(e) => {
-          onSubmit(e);
-        }}
-      ></button>
+      <button onClick={handleLogin}></button>
     </div>
   );
 };

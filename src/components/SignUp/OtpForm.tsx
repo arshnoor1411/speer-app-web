@@ -1,14 +1,19 @@
-import { Dispatch, SetStateAction, useState, MouseEvent } from "react";
-interface OtpFormProps {
-  email: string;
-  otp: string;
-  setEmail: Dispatch<SetStateAction<string>>;
-  setOtp: Dispatch<SetStateAction<string>>;
-  onSubmit: (e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>) => void;
-}
+import axios from "axios";
+import { useState } from "react";
 
-const OtpForm = (props: OtpFormProps) => {
-  const { email, otp, setEmail, setOtp, onSubmit } = props;
+const OtpForm = () => {
+  const [otp, setOtp] = useState("");
+  const [showOtpPopup, setShowOtpPopup] = useState(false);
+
+  const [signedUp, setSignedUp] = useState(false);
+  const handleOtp = async (e: { preventDefault: () => void }) => {
+    e.preventDefault();
+
+    const repsonse = await axios.post("http://localhost:4000/auth/verify-otp", {
+      // email,
+      otp,
+    });
+  };
   return (
     <div>
       <input
@@ -16,7 +21,7 @@ const OtpForm = (props: OtpFormProps) => {
         value={otp}
         onChange={(e) => setOtp(e.target.value)}
       ></input>
-      <button onClick={(e) => onSubmit(e)}>Verify</button>
+      <button onClick={handleOtp}>Verify</button>
     </div>
   );
 };
